@@ -29,15 +29,11 @@ public class MyController {
 
 
     @MessageMapping("/message")
-//    @SendToUser("/topic/public")
     private void receiveMyMessage(@RequestBody MyMessage message){
         List<AnonymousPrinciple> a =  simpUserRegistry.getUsers().stream().map(j->(AnonymousPrinciple)j.getPrincipal()).filter(j->j.getState().equals(AnonymousPrinciple.State.Online)).collect(Collectors.toList());
-
         for (AnonymousPrinciple p:a){
             simpMessagingTemplate.convertAndSendToUser(p.getName(),"/topic/public",message);
         }
-
-//        return message;
     }
 
 }
